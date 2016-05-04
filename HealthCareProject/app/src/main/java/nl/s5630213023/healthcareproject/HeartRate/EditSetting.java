@@ -118,7 +118,12 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
             editLastName.setText(c.getString(2));
             editBirthDay.setText(c.getString(3));
 
-           // editSex.setText(c.getString(4));
+            for(int i = 0; i < editSex.getCount(); i++){
+                if(editSex.getItemAtPosition(i).toString().equals(c.getString(4))){
+                    editSex.setSelection(i);
+                    break;
+                }}
+            
             editMedicalCondition.setText(c.getString(5));
             editMidicalNote.setText(c.getString(6));
             editAllerAndReact.setText(c.getString(7));
@@ -128,8 +133,14 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
             editHowOften.setText(c.getString(11));
             editEmContect.setText(c.getString(12));
             editEmTelephone.setText(c.getString(13));
-            //editBloodType.setSelection(typeBloodSelect.indexOf(c.getString(14)));
-            //editBloodType.setText(c.getString(14));
+
+            for(int i = 0; i < editBloodType.getCount(); i++){
+                if(editBloodType.getItemAtPosition(i).toString().equals(c.getString(14))){
+                    editBloodType.setSelection(i);
+                    break;
+                }
+            }
+
             editWeight.setText(c.getString(15));
             editHight.setText(c.getString(16));
         }
