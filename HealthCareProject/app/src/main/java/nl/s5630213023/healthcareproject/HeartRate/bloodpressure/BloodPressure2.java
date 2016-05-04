@@ -9,16 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.github.mikephil.charting.charts.LineChart;
+
 import java.util.ArrayList;
 
 import nl.s5630213023.healthcareproject.R;
 
 public class BloodPressure2 extends Fragment implements View.OnClickListener {
+    private LineChart mChart;
 
     ListView listView;
     static ArrayList<BloodPressure> arrayPressure = new ArrayList<BloodPressure>();
     BloodPressureAdapter adapter;
 
+    //chart
 
     public static BloodPressure2 newInstance() {
         return new BloodPressure2();

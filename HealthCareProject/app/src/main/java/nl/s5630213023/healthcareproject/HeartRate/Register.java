@@ -76,7 +76,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         cv.put("how_often",30);
         cv.put("emergencyContract", "Contract".toString());
         cv.put("emergencyTelephone","080-000-0000".toString());
-        cv.put("bloodType", "Type".toString());
+        cv.put("bloodType", "A".toString());
         cv.put("weight", 50);
         cv.put("hight", 170);
         cv.put("Email", edtEmailRegis.getText().toString());

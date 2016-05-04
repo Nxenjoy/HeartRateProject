@@ -123,7 +123,7 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
                     editSex.setSelection(i);
                     break;
                 }}
-            
+
             editMedicalCondition.setText(c.getString(5));
             editMidicalNote.setText(c.getString(6));
             editAllerAndReact.setText(c.getString(7));
