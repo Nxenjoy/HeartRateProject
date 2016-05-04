@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">HealthCareProject</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_measure">Measure</string>
+    <string name="title_activity_menu">Health Care</string>
+    <string name="title_activity_blood_pressure__main">BloodPressure_MainActivity</string>
+    <string name="title_activity_exercise__main">Exercise_MainActivity</string>
+    <string name="title_activity_record__blood_pressure">Record_BloodPressure</string>
+    <string name="title_activity_user_setting">Setting</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_edit_setting">Edit Setting</string>
+    <string name="title_activity_location_now">Map</string>
+    <string name="title_activity_now_loacation">Map</string>
+    <string name="title_activity_blood_pressure_adapter">BloodPressureAdapter</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_heart_rate_adapter">HeartRateAdapter</string>
+    <string name="title_activity_exercise_adapter">ExerciseAdapter</string>
+</resources>

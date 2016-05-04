@@ -1,0 +1,54 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.tabstutorial.Fragment1"
+    android:paddingStart="50dp"
+    android:paddingEnd="50dp"
+    android:longClickable="false">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newPressure"
+        android:layout_gravity="center_horizontal|top"
+        android:textSize="40dp"
+        android:layout_marginTop="150dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="RECORD"
+        android:onClick="onClick"
+        android:textColor="#ffffff"
+        android:background="#f5a626"
+        android:id="@+id/recordBP"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="200dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Date_bloodpressure1"
+        android:id="@+id/date_bloodpressure1"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="100dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Detail_bloodpressure1"
+        android:id="@+id/detail_bloodpressure1"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        android:textIsSelectable="false" />
+
+
+</FrameLayout>
+

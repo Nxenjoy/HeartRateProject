@@ -1,0 +1,65 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.tabstutorial.Fragment1">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/textView6"
+        android:layout_gravity="right|top" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/newHeartRate"
+        android:layout_gravity="center_horizontal|top"
+        android:textSize="40dp"
+        android:layout_marginTop="150dp" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="MEASURE"
+        android:onClick="onClick"
+        android:textColor="#ffffff"
+        android:background="#f64040"
+        android:id="@+id/measure"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="150dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="date_heartRate"
+        android:id="@+id/date_heartRate"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="100dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="General"
+        android:id="@+id/General"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="220dp" />
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:id="@+id/Map"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+</FrameLayout>
+

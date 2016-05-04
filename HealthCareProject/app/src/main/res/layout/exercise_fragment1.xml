@@ -1,0 +1,72 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.tabstutorial.Fragment1">
+
+
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="START"
+        android:onClick="onClick"
+        android:textColor="#ffffff"
+        android:background="#64d345"
+        android:id="@+id/startEX"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="200dp" />
+
+    <EditText
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/editTimer"
+        android:layout_gravity="center_horizontal|top"
+        android:text="60"
+        android:textSize="20dp"
+        android:layout_marginTop="150dp" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="minute"
+        android:id="@+id/textView9"
+        android:layout_gravity="right|top"
+        android:textSize="20dp"
+        android:layout_marginTop="150dp" />
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:text="Time target"
+        android:id="@+id/textView8"
+        android:layout_gravity="left|top"
+        android:textSize="20dp"
+        android:layout_marginTop="150dp" />
+
+    <Spinner
+        android:id="@+id/typeExercise"
+        android:layout_width="128dp"
+        android:layout_height="85dp"
+        android:layout_gravity="left|top"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="200dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="date_exercise"
+        android:id="@+id/date_exercise"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="100dp" />
+
+
+</FrameLayout>
+

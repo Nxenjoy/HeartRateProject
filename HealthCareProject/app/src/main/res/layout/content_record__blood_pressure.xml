@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="nl.s5630213023.healthcareproject.HeartRate.bloodpressure.Record_BloodPressure"
+    tools:showIn="@layout/activity_record__blood_pressure">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Systolic (mmHg)"
+        android:id="@+id/textView10"
+        android:layout_marginTop="175dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/textView11" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Diastolic (mmHg)"
+        android:id="@+id/textView11"
+        android:layout_below="@+id/textView10"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="43dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:id="@+id/systolic"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/textView10"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/textView11" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:id="@+id/diastolic"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/textView11"
+        android:layout_alignStart="@+id/systolic"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="date_record"
+        android:id="@+id/date_record"
+        android:layout_above="@+id/systolic"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="53dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="RECORD"
+        android:id="@+id/recordbtn"
+        android:background="#f5a626"
+        android:layout_marginBottom="100dp"
+
+        android:layout_marginLeft="20dp" />
+
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/cancelRecord"
+        android:layout_marginBottom="100dp"
+        android:background="#f5a626"
+        android:layout_marginLeft="30dp" />
+    </LinearLayout>
+</RelativeLayout>
