@@ -28,7 +28,8 @@ public class Exercise1 extends Fragment implements View.OnClickListener {
     EditText editTimer;
     String formattedDateRecord;
     String formattedTimeRecord;
-
+    static String typeSelect;
+    Spinner typeExercise;
     public Exercise1() {
         // Required empty public constructor
     }
@@ -48,11 +49,15 @@ public class Exercise1 extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.exercise_fragment1,container,false);
         Button btnStart = (Button)v.findViewById(R.id.startEX);
         btnStart.setOnClickListener(this);
+
+        //Spinner
         String[] type = {"Type","Walking","Running","Fitness","Other",};
-        Spinner typeExercise = (Spinner)v.findViewById(R.id.typeExercise);
+        typeExercise = (Spinner)v.findViewById(R.id.typeExercise);
+
         ArrayAdapter<String> strType = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,type);
         strType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         typeExercise.setAdapter(strType);
+
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -92,7 +97,8 @@ public class Exercise1 extends Fragment implements View.OnClickListener {
         cv.put("Date",formattedDateRecord.toString());
         cv.put("Time",formattedTimeRecord.toString());
         cv.put("Timer",Integer.parseInt(editTimer.getText().toString()));
-        cv.put("Type","Running".toString());
+        typeSelect = typeExercise.getSelectedItem().toString();
+        cv.put("Type",typeSelect);
         Uri uri = getActivity().getContentResolver().insert(u,cv);
         Toast.makeText(getActivity().getApplicationContext(), "Start complete", Toast.LENGTH_SHORT).show();
     }
