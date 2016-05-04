@@ -23,7 +23,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,7 +36,7 @@ public class MeasureActivity extends AppCompatActivity implements  View.OnClickL
     int heartRate;
     static int lowHeartRate,highHeartRate;
     String status;
-
+    static String Name,Lastname,emergencyContract,emergencyTelephone;
 
     //Google Map
     private GoogleMap gMap;
@@ -95,18 +94,7 @@ public class MeasureActivity extends AppCompatActivity implements  View.OnClickL
             //gMap.clear();
             latitudine = location.getLatitude();
             longitudine = location.getLongitude();
-            LatLng coordinate = new LatLng(latitudine, longitudine);
 
-           /* gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 16));
-            gMap.addMarker(new MarkerOptions().position(coordinate).title("I AM HERE").snippet("Your Position"));*/
-
-            Toast.makeText(getApplicationContext(), "Latitude " + latitudine + "  Longtitude " + longitudine, Toast.LENGTH_SHORT).show();
-            /*gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 17));
-*/
-            /*MarkerOptions marker = new MarkerOptions().position(new LatLng(latitudine,longitudine)).title("Your current location");
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-            gMap.addMarker(marker);*/
 
         }
         public void onProviderDisabled(String provider) {
@@ -147,7 +135,9 @@ public class MeasureActivity extends AppCompatActivity implements  View.OnClickL
         if(heartRate>highHeartRate || heartRate<lowHeartRate) {
             status = "Abnormal";
             SmsManager sms = SmsManager.getDefault();
-            sms.sendTextMessage(emergencyTelephone, null,"To "+emergencyContract  +"\n "+ Name +" " +Lastname + , null, null);
+            sms.sendTextMessage(emergencyTelephone, null,"EMERGENCY TO "+emergencyContract  +"\n "+
+                    "From "+Name +" " +Lastname + "\n" +
+                    " @ Latitudine :  "+ latitudine +" Longitudine : "+ longitudine , null, null);
         }else { status = "Normal";
         }
         cv.put("Status",status);
@@ -156,7 +146,7 @@ public class MeasureActivity extends AppCompatActivity implements  View.OnClickL
     }
 
 
-    static String Name,Lastname,emergencyContract,emergencyTelephone;
+
     private void showUser() {
         Uri u = Uri.parse("content://UserDBs");
         String projs[] = {"Name", "Lastname","lowHeartRate", "highHeartRate","emergencyContract","emergencyTelephone"};
