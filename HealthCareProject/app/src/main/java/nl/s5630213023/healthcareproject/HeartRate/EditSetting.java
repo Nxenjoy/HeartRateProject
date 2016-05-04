@@ -10,31 +10,29 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import nl.s5630213023.healthcareproject.R;
 
 public class EditSetting extends AppCompatActivity implements View.OnClickListener {
-    EditText editName;
-    EditText editLastName;
-    EditText editBirthDay;
-    EditText editSex;
-    EditText editMedicalCondition;
-    EditText editMidicalNote;
-    EditText editAllerAndReact;
-    EditText editMedications;
-    EditText editLowHeart;
-    EditText editHightHeart;
-    EditText editHowOften;
-    EditText editEmContect;
-    EditText editBloodType;
-    EditText editWeight;
-    EditText editHight;
+    EditText editName,editLastName,editBirthDay,editMedicalCondition,editMidicalNote,editAllerAndReact;
+    EditText editMedications,editLowHeart,editHightHeart,editHowOften,editEmContect,editWeight,editHight;
     TextView editContactID;
     EditText editEmTelephone;
+
+    //Spinner BloodType
+    static String typeBloodSelect;
+    Spinner editBloodType;
+
+    //Spinner Sex
+    static String typeSexSelect;
+    Spinner editSex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +57,13 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
         editName = (EditText) findViewById(R.id.editName);
         editLastName = (EditText) findViewById(R.id.editLastName);
         editBirthDay = (EditText) findViewById(R.id.editBirthDay);
-        editSex = (EditText) findViewById(R.id.editSex);
+
+        String[] Sextype = {"Male","Female"};
+        editSex = (Spinner) findViewById(R.id.editSex);
+        ArrayAdapter<String> strSexType = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,Sextype);
+        strSexType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        editSex.setAdapter(strSexType);
+
         editMedicalCondition = (EditText) findViewById(R.id.editMedicalCondition);
         editMidicalNote = (EditText) findViewById(R.id.editMidicalNote);
         editAllerAndReact = (EditText) findViewById(R.id.editAllerAndReact);
@@ -69,7 +73,14 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
         editHowOften = (EditText) findViewById(R.id.editHowOften);
         editEmContect = (EditText) findViewById(R.id.editEmContect);
         editEmTelephone = (EditText) findViewById(R.id.editEmTelephone);
-        editBloodType = (EditText) findViewById(R.id.editBloodType);
+
+
+        String[] type = {"A","B","AB","O"};
+        editBloodType = (Spinner) findViewById(R.id.editBloodType);
+        ArrayAdapter<String> strType = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,type);
+        strType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        editBloodType.setAdapter(strType);
+
         editWeight = (EditText) findViewById(R.id.editWeight);
         editHight = (EditText) findViewById(R.id.editHight);
         editContactID = (TextView) findViewById(R.id.editContactID);
@@ -106,7 +117,8 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
             editName.setText(c.getString(1));
             editLastName.setText(c.getString(2));
             editBirthDay.setText(c.getString(3));
-            editSex.setText(c.getString(4));
+
+           // editSex.setText(c.getString(4));
             editMedicalCondition.setText(c.getString(5));
             editMidicalNote.setText(c.getString(6));
             editAllerAndReact.setText(c.getString(7));
@@ -116,7 +128,8 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
             editHowOften.setText(c.getString(11));
             editEmContect.setText(c.getString(12));
             editEmTelephone.setText(c.getString(13));
-            editBloodType.setText(c.getString(14));
+            //editBloodType.setSelection(typeBloodSelect.indexOf(c.getString(14)));
+            //editBloodType.setText(c.getString(14));
             editWeight.setText(c.getString(15));
             editHight.setText(c.getString(16));
         }
@@ -130,7 +143,8 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
         i.put("Name", editName.getText().toString());
         i.put("Lastname", editLastName.getText().toString());
         i.put("Birthday", editBirthDay.getText().toString());
-        i.put("Sex", editSex.getText().toString());
+        typeSexSelect = editSex.getSelectedItem().toString();
+        i.put("Sex", typeSexSelect);
         i.put("medicalCondition", editMedicalCondition.getText().toString());
         i.put("medicalNote", editMidicalNote.getText().toString());
         i.put("Allergies_reaction", editAllerAndReact.getText().toString());
@@ -140,7 +154,8 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
         i.put("how_often", Integer.parseInt(editHowOften.getText().toString()));
         i.put("emergencyContract", editEmContect.getText().toString());
         i.put("emergencyTelephone", editEmTelephone.getText().toString());
-        i.put("bloodType", editBloodType.getText().toString());
+        typeBloodSelect = editBloodType.getSelectedItem().toString();
+        i.put("bloodType", typeBloodSelect);
         i.put("weight", Integer.parseInt(editWeight.getText().toString()));
         i.put("hight", Integer.parseInt(editHight.getText().toString()));
 

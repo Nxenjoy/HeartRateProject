@@ -28,8 +28,12 @@ public class Exercise1 extends Fragment implements View.OnClickListener {
     EditText editTimer;
     String formattedDateRecord;
     String formattedTimeRecord;
+
+    //Spinner
     static String typeSelect;
     Spinner typeExercise;
+
+
     public Exercise1() {
         // Required empty public constructor
     }
@@ -58,7 +62,7 @@ public class Exercise1 extends Fragment implements View.OnClickListener {
         strType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         typeExercise.setAdapter(strType);
 
-
+        //Calendar
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = df.format(c.getTime());
