@@ -101,10 +101,9 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
     private void showStatus() {
         Uri u = Uri.parse("content://HeartRateDB");
         String projs[] = {"Status"};
-        Cursor c = getActivity().getContentResolver().query(u, projs, null, null, "Status DESC");
+        Cursor c = getActivity().getContentResolver().query(u, projs, null, null, "heartRate_id DESC");
         if (c.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "not found", Toast.LENGTH_SHORT).show();
-
         } else {
             c.moveToNext();
             status.setText(c.getString(0));
@@ -118,7 +117,6 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
         Cursor c = getActivity().getContentResolver().query(u, projs, null, null, "heartRate_id DESC");
         if (c.getCount() == 0) {
             Toast.makeText(getActivity().getApplicationContext(), "not found", Toast.LENGTH_SHORT).show();
-
         } else {
             c.moveToNext();
             newHeartRate.setText(c.getString(0) + " bpm");

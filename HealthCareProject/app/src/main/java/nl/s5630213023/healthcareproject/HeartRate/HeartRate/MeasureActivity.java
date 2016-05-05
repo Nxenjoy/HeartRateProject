@@ -135,10 +135,15 @@ public class MeasureActivity extends AppCompatActivity implements  View.OnClickL
         if(heartRate>highHeartRate || heartRate<lowHeartRate) {
             status = "Abnormal";
             SmsManager sms = SmsManager.getDefault();
+            StringBuffer smsBody = new StringBuffer();
+            smsBody.append("http://maps.google.com?q=");
+            smsBody.append(latitudine);
+            smsBody.append(",");
+            smsBody.append(longitudine);
             sms.sendTextMessage(emergencyTelephone, null,"EMERGENCY TO "+emergencyContract  +"\n "+
-                    "From "+Name +" " +Lastname + "\n" +
-                    " @ Latitudine :  "+ latitudine +" Longitudine : "+ longitudine , null, null);
-        }else { status = "Normal";
+                    "From "+Name +" " +Lastname + "\n" + smsBody.toString(), null, null);
+        }else {
+            status = "Normal";
         }
         cv.put("Status",status);
         Uri uri = getContentResolver().insert(u,cv);
