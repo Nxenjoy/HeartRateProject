@@ -1,12 +1,11 @@
 package nl.s5630213023.healthcareproject.HeartRate.HeartRate;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +18,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
@@ -27,16 +29,17 @@ import java.util.Calendar;
 
 import nl.s5630213023.healthcareproject.R;
 
-public class HeartRate1 extends Fragment implements View.OnClickListener{
+public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapReadyCallback {
 
     TextView newHeartRate;
+    TextView status;
+    Location location;
     //Google map
-    private GoogleMap gMap;
+    private GoogleMap googleMap;
     // Latitude & Longitude
-    protected LocationManager locationManager;
 
 
-    private double latitudine = 0.00 , longitudine = 0.00;
+    private double latitudine = 0.00, longitudine = 0.00;
 
     public static HeartRate1 newInstance() {
         return new HeartRate1();
@@ -64,7 +67,7 @@ public class HeartRate1 extends Fragment implements View.OnClickListener{
         btnMeasure.setOnClickListener(this);
 
         newHeartRate = (TextView) v.findViewById(R.id.newHeartRate);
-
+        status = (TextView)v.findViewById(R.id.status);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = df.format(c.getTime());
@@ -72,87 +75,95 @@ public class HeartRate1 extends Fragment implements View.OnClickListener{
         TextView date = (TextView) v.findViewById(R.id.date_heartRate);
         date.setText("Current : " + formattedDate);
         showHeartRate();
-
+        showStatus();
 
         //Google map
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        try {
-            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            }
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        SupportMapFragment m = ((SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.Map));
 
-
-            gMap.setMyLocationEnabled(true);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        m.getMapAsync(this);
 
         return v;
     }
 
 
-    LocationListener locationListener = new LocationListener() {
-        public void onLocationChanged(Location location) {
-            // TODO Auto-generated method stub
-
-            if (location == null) { return; }
-            //gMap.clear();
-            latitudine = location.getLatitude();
-            longitudine = location.getLongitude();
-            LatLng coordinate = new LatLng(latitudine, longitudine);
-
-           /* gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 16));
-            gMap.addMarker(new MarkerOptions().position(coordinate).title("I AM HERE").snippet("Your Position"));*/
-
-
-            /*gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordinate, 17));
-*/
-           // Toast.makeText(getActivity().getApplicationContext(), "Latitude " + latitudine + "  Longtitude " + longitudine, Toast.LENGTH_SHORT).show();
-
-            /*MarkerOptions marker = new MarkerOptions().position(new LatLng(latitudine,longitudine)).title("Your current location");
-            marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-            gMap.addMarker(marker);*/
-
-        }
-        public void onProviderDisabled(String provider) {
-            // TODO Auto-generated method stub
-        }
-        public void onProviderEnabled(String provider) {
-            // TODO Auto-generated method stub
-        }
-        public void onStatusChanged(String provider, int status,
-                                    Bundle extras) {
-            // TODO Auto-generated method stub
-        }
-    };
-
-
     @Override
     public void onClick(View v) {
-    switch (v.getId()){
-        case R.id.measure:
-            Intent MeasuteAvtivity = new Intent(getActivity().getBaseContext(),MeasureActivity.class);
-            startActivity(MeasuteAvtivity);
-            break;
+        switch (v.getId()) {
+            case R.id.measure:
+                Intent MeasuteAvtivity = new Intent(getActivity().getBaseContext(), MeasureActivity.class);
+                startActivity(MeasuteAvtivity);
+                break;
 
+        }
     }
+
+    private void showStatus() {
+        Uri u = Uri.parse("content://HeartRateDB");
+        String projs[] = {"Status"};
+        Cursor c = getActivity().getContentResolver().query(u, projs, null, null, "Status DESC");
+        if (c.getCount() == 0) {
+            Toast.makeText(getActivity().getApplicationContext(), "not found", Toast.LENGTH_SHORT).show();
+
+        } else {
+            c.moveToNext();
+            status.setText(c.getString(0));
+
+        }
     }
+
     private void showHeartRate(){
         Uri u = Uri.parse("content://HeartRateDB");
         String projs[] = {"heartrate"};
-        Cursor c = getActivity().getContentResolver().query(u, projs, null, null,"heartRate_id DESC");
-        if(c.getCount() == 0) {
-            Toast.makeText(getActivity().getApplicationContext(), "not found", Toast.LENGTH_LONG).show();
+        Cursor c = getActivity().getContentResolver().query(u, projs, null, null, "heartRate_id DESC");
+        if (c.getCount() == 0) {
+            Toast.makeText(getActivity().getApplicationContext(), "not found", Toast.LENGTH_SHORT).show();
 
-        }else {
+        } else {
             c.moveToNext();
-            newHeartRate.setText(c.getString(0)+" bpm");
+            newHeartRate.setText(c.getString(0) + " bpm");
 
         }
     }
 
 
+
+    @Override
+    public void onMapReady(GoogleMap Map) {
+        googleMap = Map;
+        setUpMap();
+    }
+
+    public void setUpMap() {
+
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+
+        LocationManager service = (LocationManager) getActivity().getSystemService(getContext().LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = service.getBestProvider(criteria, false);
+        Location location = service.getLastKnownLocation(provider);
+
+        latitudine = location.getLatitude();
+        longitudine = location.getLongitude();
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitudine, longitudine), 16));
+
+        googleMap.setMyLocationEnabled(true);
+        googleMap.setTrafficEnabled(true);
+        googleMap.setIndoorEnabled(true);
+        googleMap.setBuildingsEnabled(true);
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+    }
 
 }
