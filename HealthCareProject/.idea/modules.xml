@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/HealthCareProject.iml" filepath="$PROJECT_DIR$/HealthCareProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mpandroidchartlibrary-2-2-4/mpandroidchartlibrary-2-2-4.iml" filepath="$PROJECT_DIR$/mpandroidchartlibrary-2-2-4/mpandroidchartlibrary-2-2-4.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mpandroidchartlibrary-2-2-4/mpandroidchartlibrary-2-2-4.iml" filepath="$PROJECT_DIR$/mpandroidchartlibrary-2-2-4/mpandroidchartlibrary-2-2-4.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapplication/myapplication.iml" filepath="$PROJECT_DIR$/myapplication/myapplication.iml" />
     </modules>
   </component>
