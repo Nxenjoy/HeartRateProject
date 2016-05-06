@@ -102,6 +102,9 @@ public class Exercise1 extends Fragment implements View.OnClickListener {
         cv.put("Time",formattedTimeRecord.toString());
         cv.put("Timer",Integer.parseInt(editTimer.getText().toString()));
         typeSelect = typeExercise.getSelectedItem().toString();
+        if(typeSelect.equals("Type")){
+            typeSelect="Unknown";
+        }
         cv.put("Type",typeSelect);
         Uri uri = getActivity().getContentResolver().insert(u,cv);
         Toast.makeText(getActivity().getApplicationContext(), "Start complete", Toast.LENGTH_SHORT).show();

@@ -69,6 +69,8 @@ public class HeartRate2 extends Fragment implements View.OnClickListener ,OnChar
         listViews.setAdapter(adapterHR);
         registerForContextMenu(listViews);
         showUser();
+        btnShow();
+
         //Chart
         mChart =(LineChart) v.findViewById(R.id.chartHR);
         mChart.setOnClickListener(this);
@@ -83,7 +85,6 @@ public class HeartRate2 extends Fragment implements View.OnClickListener ,OnChar
         mChart.setScaleEnabled(true);
 
         mChart.setPinchZoom(true);
-
 
         LimitLine llXAxis = new LimitLine(10f, "Index 10");
         llXAxis.setLineWidth(4f);
@@ -129,7 +130,6 @@ public class HeartRate2 extends Fragment implements View.OnClickListener ,OnChar
 
         l.setForm(Legend.LegendForm.LINE);
 
-        btnShow();
         return v;
     }
 
@@ -144,7 +144,7 @@ public class HeartRate2 extends Fragment implements View.OnClickListener ,OnChar
         while (c.moveToNext()) {
            arrayHeartRate.add(new Heart(c.getInt(0), c.getInt(1), c.getString(2).toString(), c.getString(3).toString(), c.getString(4).toString() ,c.getString(5).toString() ,c.getString(6).toString()));
 
-            xVals.add((c.getString(2)));
+            xVals.add((c.getString(3)));
             yVals.add(new Entry(c.getInt(1),c.getInt(0)));
         }
     }

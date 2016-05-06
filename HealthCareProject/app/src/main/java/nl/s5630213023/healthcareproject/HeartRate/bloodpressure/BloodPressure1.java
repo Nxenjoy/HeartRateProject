@@ -81,6 +81,7 @@ public class BloodPressure1 extends Fragment implements View.OnClickListener {
         case R.id.recordBP:
             Intent RecordAvtivity = new Intent(getActivity().getBaseContext(),Record_BloodPressure.class);
             startActivity(RecordAvtivity);
+            getActivity().finish();
             break;
 
     }

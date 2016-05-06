@@ -93,6 +93,7 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
             case R.id.measure:
                 Intent MeasuteAvtivity = new Intent(getActivity().getBaseContext(), MeasureActivity.class);
                 startActivity(MeasuteAvtivity);
+                getActivity().finish();
                 break;
 
         }

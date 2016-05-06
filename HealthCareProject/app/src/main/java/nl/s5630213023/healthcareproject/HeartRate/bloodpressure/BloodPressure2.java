@@ -2,22 +2,17 @@ package nl.s5630213023.healthcareproject.HeartRate.bloodpressure;
 
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -25,16 +20,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Utils;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
 import nl.s5630213023.healthcareproject.R;
 
-public class BloodPressure2 extends Fragment implements View.OnClickListener,OnChartGestureListener, OnChartValueSelectedListener {
+public class BloodPressure2 extends Fragment implements View.OnClickListener,OnChartValueSelectedListener {
 
 
     ListView listView;
@@ -43,6 +36,10 @@ public class BloodPressure2 extends Fragment implements View.OnClickListener,OnC
 
     //chart
     private LineChart mChart;
+    ArrayList<String> xVals = new ArrayList<String>();
+    ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+    ArrayList<Entry> yVals2 = new ArrayList<Entry>();
+
 
     public static BloodPressure2 newInstance() {
         return new BloodPressure2();
@@ -69,66 +66,79 @@ public class BloodPressure2 extends Fragment implements View.OnClickListener,OnC
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
         btnShow();
+
+
         //chart
-
-        mChart =(LineChart) v.findViewById(R.id.chart);
-        mChart.setOnClickListener(this);
+        mChart = (LineChart) v.findViewById(R.id.chart);
         mChart.setOnChartValueSelectedListener(this);
-        mChart.setDrawGridBackground(false);
 
+        // no description text
         mChart.setDescription("");
         mChart.setNoDataTextDescription("You need to provide data for the chart.");
 
+        // enable touch gestures
         mChart.setTouchEnabled(true);
+
+        mChart.setDragDecelerationFrictionCoef(0.9f);
+
+        // enable scaling and dragging
         mChart.setDragEnabled(true);
         mChart.setScaleEnabled(true);
+        mChart.setDrawGridBackground(false);
+        mChart.setHighlightPerDragEnabled(true);
 
+        // if disabled, scaling can be done on x- and y-axis separately
         mChart.setPinchZoom(true);
 
+        // set an alternative background color
+        mChart.setBackgroundColor(Color.WHITE);
 
-        LimitLine llXAxis = new LimitLine(10f, "Index 10");
-        llXAxis.setLineWidth(4f);
-        llXAxis.enableDashedLine(10f, 10f, 0f);
-        llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-        llXAxis.setTextSize(10f);
+        // add data
+        setData(20, 30);
+
+        mChart.animateX(2500);
+
+
+        // get the legend (only possible after setting data)
+        Legend l = mChart.getLegend();
+
+        // modify the legend ...
+        // l.setPosition(LegendPosition.LEFT_OF_CHART);
+        l.setForm(Legend.LegendForm.LINE);
+
+        l.setTextSize(11f);
+        l.setTextColor(Color.LTGRAY);
+        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+//        l.setYOffset(11f);
 
         XAxis xAxis = mChart.getXAxis();
 
-
-        LimitLine ll1 = new LimitLine(130f, "Upper Limit");
-        ll1.setLineWidth(4f);
-        ll1.enableDashedLine(10f, 10f, 0f);
-        ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-        ll1.setTextSize(10f);
-
-
-        LimitLine ll2 = new LimitLine(-30f, "Lower Limit");
-        ll2.setLineWidth(4f);
-        ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-        ll2.setTextSize(10f);
+        xAxis.setTextSize(12f);
+        xAxis.setTextColor(Color.LTGRAY);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setSpaceBetweenLabels(1);
 
         YAxis leftAxis = mChart.getAxisLeft();
-        leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-        leftAxis.addLimitLine(ll1);
-        leftAxis.addLimitLine(ll2);
-        leftAxis.setAxisMaxValue(220f);
-        leftAxis.setAxisMinValue(-50f);
-        //leftAxis.setYOffset(20f);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-        leftAxis.setDrawZeroLine(false);
+
+        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
+        leftAxis.setAxisMaxValue(200f);
+        leftAxis.setAxisMinValue(0f);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularityEnabled(true);
+
+        YAxis rightAxis = mChart.getAxisRight();
+
+        rightAxis.setTextColor(Color.RED);
+        rightAxis.setAxisMaxValue(200);
+        rightAxis.setAxisMinValue(0);
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawZeroLine(false);
+        rightAxis.setGranularityEnabled(false);
 
 
-        leftAxis.setDrawLimitLinesBehindData(true);
 
-        mChart.getAxisRight().setEnabled(false);
 
-        setData(45, 100);
-
-        mChart.animateX(2500, Easing.EasingOption.EaseInOutQuart);
-        Legend l = mChart.getLegend();
-
-        l.setForm(Legend.LegendForm.LINE);
 
         return v;
     }
@@ -146,125 +156,76 @@ public class BloodPressure2 extends Fragment implements View.OnClickListener,OnC
         Cursor c = getActivity().getContentResolver().query(u, null, null, null, null);
         while (c.moveToNext()) {
             arrayPressure.add(new BloodPressure(c.getInt(0), c.getInt(1), c.getInt(2), c.getString(3).toString(), c.getString(4).toString()));
-
+            xVals.add(c.getString(4));
+            yVals1.add(new Entry(c.getInt(1),c.getInt(0)));
+            yVals2.add(new Entry(c.getInt(2), c.getInt(0)));
         }
 
     }
 
+
     private void setData(int count, float range) {
 
-        ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
-        }
 
-        ArrayList<Entry> yVals = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-
-            float mult = (range + 1);
-            float val = (float) (Math.random() * mult) + 3;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals.add(new Entry(val, i));
-        }
-
-        LineDataSet set1;
+        LineDataSet set1, set2;
 
         if (mChart.getData() != null &&
                 mChart.getData().getDataSetCount() > 0) {
-           /* set1 = (LineDataSet)mChart.getData().getDataSetByIndex(0);
-           set1.setYVals(yVals);
-           mChart.getData().setXVals(xVals);
+            set1 = (LineDataSet) mChart.getData().getDataSetByIndex(0);
+            set2 = (LineDataSet) mChart.getData().getDataSetByIndex(1);
 
-            mChart.notifyDataSetChanged();*/
+            mChart.notifyDataSetChanged();
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(yVals, "DataSet 1");
+            set1 = new LineDataSet(yVals1, "Systolic");
 
-            // set1.setFillAlpha(110);
-            // set1.setFillColor(Color.RED);
-
-            // set the line to be drawn like this "- - - - - -"
-            set1.enableDashedLine(10f, 5f, 0f);
-            set1.enableDashedHighlightLine(10f, 5f, 0f);
-            set1.setColor(Color.BLACK);
-            set1.setCircleColor(Color.BLACK);
-            set1.setLineWidth(1f);
+            set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+            set1.setColor(ColorTemplate.getHoloBlue());
+            set1.setCircleColor(Color.LTGRAY);
+            set1.setLineWidth(2f);
             set1.setCircleRadius(3f);
+            set1.setFillAlpha(65);
+            set1.setFillColor(ColorTemplate.getHoloBlue());
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
             set1.setDrawCircleHole(false);
-            set1.setValueTextSize(9f);
-            set1.setDrawFilled(true);
+            //set1.setFillFormatter(new MyFillFormatter(0f));
+            //set1.setDrawHorizontalHighlightIndicator(false);
+            //set1.setVisible(false);
+            //set1.setCircleHoleColor(Color.WHITE);
 
-            if (Utils.getSDKInt() >= 18) {
-                // fill drawable only supported on api level 18 and above
-                Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
-                set1.setFillDrawable(drawable);
-            }
-            else {
-                set1.setFillColor(Color.BLACK);
-            }
+            // create a dataset and give it a type
+            set2 = new LineDataSet(yVals2, "Diastolic");
+            set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
+            set2.setColor(Color.RED);
+            set2.setCircleColor(Color.LTGRAY);
+            set2.setLineWidth(2f);
+            set2.setCircleRadius(3f);
+            set2.setFillAlpha(65);
+            set2.setFillColor(Color.RED);
+            set2.setDrawCircleHole(false);
+            set2.setHighLightColor(Color.rgb(244, 117, 117));
+            //set2.setFillFormatter(new MyFillFormatter(900f));
 
             ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            dataSets.add(set2);
             dataSets.add(set1); // add the datasets
 
             // create a data object with the datasets
             LineData data = new LineData(xVals, dataSets);
+            data.setValueTextColor(Color.LTGRAY);
+            data.setValueTextSize(9f);
 
             // set data
             mChart.setData(data);
         }
-    }
 
 
-    @Override
-    public void onChartGestureStart(MotionEvent me, ChartTouchListener.ChartGesture chartGesture) {
-        Log.i("Gesture", "START, x: " + me.getX() + ", y: " + me.getY());
-    }
-
-    @Override
-    public void onChartGestureEnd(MotionEvent motionEvent, ChartTouchListener.ChartGesture chartGesture) {
-        Log.i("Gesture", "END, lastGesture: " + chartGesture);
-        if(chartGesture != ChartTouchListener.ChartGesture.SINGLE_TAP)
-            mChart.highlightValues(null); // or highlightTouch(null) for callback to onNothingSelected(...)
 
     }
 
     @Override
-    public void onChartLongPressed(MotionEvent motionEvent) {
-        Log.i("LongPress", "Chart longpressed.");
-    }
-
-    @Override
-    public void onChartDoubleTapped(MotionEvent motionEvent) {
-        Log.i("DoubleTap", "Chart double-tapped.");
-    }
-
-    @Override
-    public void onChartSingleTapped(MotionEvent motionEvent) {
-        Log.i("SingleTap", "Chart single-tapped.");
-    }
-
-    @Override
-    public void onChartFling(MotionEvent motionEvent, MotionEvent motionEvent1, float velocityX, float velocityY) {
-        Log.i("Fling", "Chart flinged. VeloX: " + velocityX + ", VeloY: " + velocityY);
-    }
-
-    @Override
-    public void onChartScale(MotionEvent motionEvent,float scaleX, float scaleY) {
-        Log.i("Scale / Zoom", "ScaleX: " + scaleX + ", ScaleY: " + scaleY);
-    }
-
-    @Override
-    public void onChartTranslate(MotionEvent motionEvent, float dX, float dY) {
-        Log.i("Translate / Move", "dX: " + dX + ", dY: " + dY);
-    }
-
-    @Override
-    public void onValueSelected(Entry entry, int i, Highlight highlight) {
-        Log.i("Entry selected", entry.toString());
-        Log.i("LOWHIGH", "low: " + mChart.getLowestVisibleXIndex() + ", high: " + mChart.getHighestVisibleXIndex());
-        Log.i("MIN MAX", "xmin: " + mChart.getXChartMin() + ", xmax: " + mChart.getXChartMax() + ", ymin: " + mChart.getYChartMin() + ", ymax: " + mChart.getYChartMax());
+    public void onValueSelected(Entry e, int i, Highlight highlight) {
+        Log.i("Entry selected", e.toString());
     }
 
     @Override
