@@ -144,7 +144,7 @@ public class HeartRate2 extends Fragment implements View.OnClickListener ,OnChar
         while (c.moveToNext()) {
            arrayHeartRate.add(new Heart(c.getInt(0), c.getInt(1), c.getString(2).toString(), c.getString(3).toString(), c.getString(4).toString() ,c.getString(5).toString() ,c.getString(6).toString()));
 
-            xVals.add((c.getString(3)));
+            xVals.add((c.getString(2)));
             yVals.add(new Entry(c.getInt(1),c.getInt(0)));
         }
     }
@@ -164,7 +164,7 @@ public class HeartRate2 extends Fragment implements View.OnClickListener ,OnChar
             mChart.notifyDataSetChanged();*/
         } else {
             // create a dataset and give it a type
-            set1 = new LineDataSet(yVals, "DataSet 1");
+            set1 = new LineDataSet(yVals, "Heart Rate");
 
             // set1.setFillAlpha(110);
             // set1.setFillColor(Color.RED);
