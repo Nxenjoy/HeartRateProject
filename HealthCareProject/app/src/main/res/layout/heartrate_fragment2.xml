@@ -11,8 +11,8 @@
         android:layout_gravity="center"
         android:layout_marginTop="100dp" />
 
-    <lecho.lib.hellocharts.view.LineChartView
-        android:id="@+id/chart"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chartHR"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_gravity="center_horizontal|top" />
