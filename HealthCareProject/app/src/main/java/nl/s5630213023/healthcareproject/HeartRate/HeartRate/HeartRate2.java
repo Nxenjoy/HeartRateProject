@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.github.mikephil.charting.charts.LineChart;
+
 import java.util.ArrayList;
 
 import nl.s5630213023.healthcareproject.R;
@@ -17,7 +19,7 @@ public class HeartRate2 extends Fragment implements View.OnClickListener {
     ListView listViews;
     static ArrayList<Heart> arrayHeartRate = new ArrayList<Heart>();
     HeartRateAdapter adapterHR;
-
+    private LineChart chart;
     public static HeartRate2 newInstance() {
         return new HeartRate2();
     }

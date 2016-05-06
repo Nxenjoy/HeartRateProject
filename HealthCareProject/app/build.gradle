@@ -18,7 +18,10 @@ android {
         }
     }
 }
+repositories {
+    maven { url "https://jitpack.io" }
 
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -29,5 +32,7 @@ dependencies {
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
 
+    //chart
     compile files('libs/mpandroidchartlibrary-2-2-4.jar')
+
 }

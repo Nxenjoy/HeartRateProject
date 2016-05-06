@@ -18,6 +18,7 @@ public class BloodPressure {
         Time = time;
     }
 
+
     public String toString(){return this.getSystolic()+"/"+this.getDiastolic()+" mmHg \t"+this.getTime();}
 
     public int getPressure_id() {return pressure_id;}
@@ -39,8 +40,6 @@ public class BloodPressure {
     public String getTime() {return Time;}
 
     public void setTime(String time) {Time = time;}
-
-
 
 
 }
