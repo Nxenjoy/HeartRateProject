@@ -11,7 +11,6 @@
     tools:context="com.example.tabstutorial.Fragment1">
 
 
-
     <Button
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -21,7 +20,7 @@
         android:background="#64d345"
         android:id="@+id/startEX"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="200dp" />
+        android:layout_marginBottom="100dp" />
 
     <EditText
         android:layout_width="50dp"
@@ -54,9 +53,9 @@
         android:id="@+id/typeExercise"
         android:layout_width="128dp"
         android:layout_height="85dp"
-        android:layout_gravity="left|top"
-        android:layout_marginLeft="50dp"
+        android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="200dp" />
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,6 +65,15 @@
         android:id="@+id/date_exercise"
         android:layout_gravity="center_horizontal|top"
         android:layout_marginTop="100dp" />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:id="@+id/Timer"
+        android:textSize="50dp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="200dp"
+        android:layout_marginLeft="50dp" />
 
 
 </FrameLayout>
