@@ -91,7 +91,7 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.measure:
-                Intent MeasuteAvtivity = new Intent(getActivity().getBaseContext(), MeasureActivity.class);
+                Intent MeasuteAvtivity = new Intent(getActivity().getBaseContext(), HeartRateMonitor.class);
                 startActivity(MeasuteAvtivity);
                 getActivity().finish();
                 break;
