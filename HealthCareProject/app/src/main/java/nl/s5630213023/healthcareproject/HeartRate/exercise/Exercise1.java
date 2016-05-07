@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,7 +77,7 @@ public class Exercise1 extends Fragment{
         dateex.setText("Current : " + formattedDate);
 
         editTimer = (EditText)v.findViewById(R.id.editTimer);
-
+        editTimer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         formattedDateRecord = date.format(c.getTime());
 
@@ -140,4 +141,6 @@ public class CounterClass extends CountDownTimer{
         Uri uri = getActivity().getContentResolver().insert(u,cv);
         Toast.makeText(getActivity().getApplicationContext(), "Start complete", Toast.LENGTH_SHORT).show();
     }
+
+
 }

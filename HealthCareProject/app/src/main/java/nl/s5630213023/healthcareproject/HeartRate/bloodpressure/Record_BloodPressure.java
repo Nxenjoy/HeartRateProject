@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +25,8 @@ public class Record_BloodPressure extends AppCompatActivity implements View.OnCl
     EditText Diastolic;
     String formattedDateRecord;
     String formattedTimeRecord;
-
+    String systolic;
+    String diastolic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +55,12 @@ public class Record_BloodPressure extends AppCompatActivity implements View.OnCl
         cancelBP.setOnClickListener(this);
 
         Systolic = (EditText) findViewById(R.id.systolic);
+        Systolic.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         Diastolic = (EditText) findViewById(R.id.diastolic);
+        Diastolic.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        systolic = Systolic.getText().toString();
+        diastolic = Diastolic.getText().toString();
+
 
         SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         formattedDateRecord = date.format(c.getTime());

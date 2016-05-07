@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -57,7 +58,6 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
         editName = (EditText) findViewById(R.id.editName);
         editLastName = (EditText) findViewById(R.id.editLastName);
         editBirthDay = (EditText) findViewById(R.id.editBirthDay);
-
         String[] Sextype = {"Male","Female"};
         editSex = (Spinner) findViewById(R.id.editSex);
         ArrayAdapter<String> strSexType = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,Sextype);
@@ -69,10 +69,17 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
         editAllerAndReact = (EditText) findViewById(R.id.editAllerAndReact);
         editMedications = (EditText) findViewById(R.id.editMedications);
         editLowHeart = (EditText) findViewById(R.id.editLowHeart);
+        editLowHeart.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
         editHightHeart = (EditText) findViewById(R.id.editHightHeart);
+        editHightHeart.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
         editHowOften = (EditText) findViewById(R.id.editHowOften);
+        editHowOften.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
         editEmContect = (EditText) findViewById(R.id.editEmContect);
         editEmTelephone = (EditText) findViewById(R.id.editEmTelephone);
+        editEmTelephone.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
 
         String[] type = {"A","B","AB","O"};
@@ -82,7 +89,9 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
         editBloodType.setAdapter(strType);
 
         editWeight = (EditText) findViewById(R.id.editWeight);
+        editWeight.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         editHight = (EditText) findViewById(R.id.editHight);
+        editHight.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         editContactID = (TextView) findViewById(R.id.editContactID);
         showUser();
     }
@@ -95,10 +104,11 @@ public class EditSetting extends AppCompatActivity implements View.OnClickListen
                 startActivity(UserSettingActivity);
                 editUser();
                 finish();
-                //ใส่ method save
+
                 break;
             case R.id.cancel:
                 startActivity(UserSettingActivity);
+                finish();
                 break;
         }
     }

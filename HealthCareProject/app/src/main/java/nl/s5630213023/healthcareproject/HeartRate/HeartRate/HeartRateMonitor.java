@@ -1,11 +1,8 @@
 package nl.s5630213023.healthcareproject.HeartRate.HeartRate;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -32,11 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.pubnub.api.Callback;
-import com.pubnub.api.Pubnub;
-import com.pubnub.api.PubnubError;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -47,11 +40,11 @@ public class HeartRateMonitor extends AppCompatActivity{
 
     String formattedDateRecord;
     String formattedTimeRecord;
-    int heartRate;
+    static int heartRate;
     static int lowHeartRate,highHeartRate;
     String status;
     static String Name,Lastname,emergencyContract,emergencyTelephone;
-
+    static int beatsAvg;
     //Google Map
     private GoogleMap gMap;
     protected LocationManager locationManager;
@@ -68,14 +61,10 @@ public class HeartRateMonitor extends AppCompatActivity{
     private static TextView text = null;
     private static String beatsPerMinuteValue="";
     private static PowerManager.WakeLock wakeLock = null;
-    private final String PUBNUB_PUBLISH_KEY="pub-c-1b4f0648-a1e6-4aa1-9bae-aebadf76babe";
-    private final String PUBNUB_SUBSCRIBE_KEY="sub-c-e9fadae6-f73a-11e4-af94-02ee2ddab7fe";
-    private static Pubnub pubnub;
     private static TextView mTxtVwStopWatch;
     private static int averageIndex = 0;
     private static final int averageArraySize = 4;
     private static final int[] averageArray = new int[averageArraySize];
-    private static String strSavedDoctorID="";
     private static Context parentReference = null;
 
     public static enum TYPE {
@@ -136,8 +125,7 @@ public class HeartRateMonitor extends AppCompatActivity{
         //measure
         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         parentReference=this;
-        strSavedDoctorID= HeartRateMonitor.this.getSharedPreferences("app_prefs", MODE_PRIVATE)
-                .getString("doc_id", "---");
+
         preview = (SurfaceView) findViewById(R.id.preview);
         previewHolder = preview.getHolder();
         mTxtVwStopWatch=(TextView)findViewById(R.id.txtvwStopWatch);
@@ -149,9 +137,8 @@ public class HeartRateMonitor extends AppCompatActivity{
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
-        pubnub = new Pubnub(PUBNUB_PUBLISH_KEY, PUBNUB_SUBSCRIBE_KEY);
         prepareCountDownTimer();
-        configurePubNubClient();
+
 
     }
 
@@ -177,33 +164,6 @@ public class HeartRateMonitor extends AppCompatActivity{
             // TODO Auto-generated method stub
         }
     };
-
-    private void btnSave() {
-        Uri u = Uri.parse("content://HeartRateDB");
-        ContentValues cv = new ContentValues();
-        cv.put("heartrate", Integer.parseInt(beatsPerMinuteValue));
-        cv.put("Date",formattedDateRecord.toString());
-        cv.put("Time",formattedTimeRecord.toString());
-        cv.put("Latitude",latitudine);
-        cv.put("Longitude",longitudine);
-        heartRate = Integer.parseInt(beatsPerMinuteValue);
-        if(heartRate>highHeartRate || heartRate<lowHeartRate) {
-            status = "Abnormal";
-            SmsManager sms = SmsManager.getDefault();
-            StringBuffer smsBody = new StringBuffer();
-            smsBody.append("http://maps.google.com?q=");
-            smsBody.append(latitudine);
-            smsBody.append(",");
-            smsBody.append(longitudine);
-            sms.sendTextMessage(emergencyTelephone, null,"EMERGENCY TO "+emergencyContract  +"\n "+
-                    "From "+Name +" " +Lastname + "\n" + smsBody.toString(), null, null);
-        }else {
-            status = "Normal";
-        }
-        cv.put("Status",status);
-        Uri uri = getContentResolver().insert(u,cv);
-        Toast.makeText(getApplicationContext(), "Measure complete" + latitudine +" "+ longitudine +" "+status, Toast.LENGTH_SHORT).show();
-    }
 
 
 
@@ -252,7 +212,7 @@ public class HeartRateMonitor extends AppCompatActivity{
         camera = null;
     }
 
-    private static Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
+    private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
 
         @Override
         public void onPreviewFrame(byte[] data, Camera cam) {
@@ -330,13 +290,15 @@ public class HeartRateMonitor extends AppCompatActivity{
                         beatsArrayCnt++;
                     }
                 }
-                int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
+                beatsAvg = (beatsArrayAvg / beatsArrayCnt);
                 text.setText(String.valueOf(beatsAvg));
-                beatsPerMinuteValue=String.valueOf(beatsAvg);
-                makePhoneVibrate();
-                dispatchPubNubEvent(String.valueOf(beatsAvg));
 
-                showReadingCompleteDialog();
+                beatsPerMinuteValue=String.valueOf(beatsAvg);
+                heartRate = Integer.parseInt(beatsPerMinuteValue);
+                makePhoneVibrate();
+
+                btnSave();
+                finish();
 
                 startTime = System.currentTimeMillis();
                 beats = 0;
@@ -350,7 +312,7 @@ public class HeartRateMonitor extends AppCompatActivity{
         v.vibrate(500);
     }
 
-    private static SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
+    private  SurfaceHolder.Callback surfaceCallback = new SurfaceHolder.Callback() {
 
 
         @Override
@@ -420,65 +382,31 @@ public class HeartRateMonitor extends AppCompatActivity{
         }.start();
     }
 
-    private static void dispatchPubNubEvent(String data){
-        pubnubPublish(data);
-    }
+    private void btnSave(){
+        Uri u = Uri.parse("content://HeartRateDB");
+        ContentValues cv = new ContentValues();
 
+        cv.put("heartrate", heartRate);
+        cv.put("Date", formattedDateRecord.toString());
+        cv.put("Time", formattedTimeRecord.toString());
+        cv.put("Latitude", latitudine);
+        cv.put("Longitude", longitudine);
 
-    private void configurePubNubClient() {
-        Callback callback = new Callback() {
-            public void successCallback(String channel, Object response) {
-                System.out.println(response.toString());
-            }
-            public void errorCallback(String channel, PubnubError error) {
-                System.out.println(error.toString());
-            }
-        };
-        pubnub.time(callback);
-
-
-
-    }
-
-
-    private static void pubnubPublish(String message){
-        //Toast.makeText(getApplicationContext(), "publishing", Toast.LENGTH_LONG).show();
-        Callback callback = new Callback() {
-            public void successCallback(String channel, Object response) {
-                Log.d("PUBNUB",response.toString());
-            }
-            public void errorCallback(String channel, PubnubError error) {
-                Log.d("PUBNUB",error.toString());
-            }
-        };
-        DateFormat df = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z");
-        String date = df.format(Calendar.getInstance().getTime());
-        pubnub.publish(strSavedDoctorID+"heartbeat_alert", "Heart beat alert at :: "+message+" for Test User @ "+date , callback);
-    }
-
-
-
-    private static void showReadingCompleteDialog(){
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(parentReference);
-        builder.setTitle("Complete measure");
-        builder.setMessage("Reading taken Succesfully at- "+beatsPerMinuteValue+" beats per minute.")
-                .setCancelable(false)
-                .setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        ( (Activity) parentReference).finish();
-
-
-                    }
-                })
-                .setNegativeButton("Take Another", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        text.setText("---");
-                        prepareCountDownTimer();
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+        if (heartRate > highHeartRate || heartRate < lowHeartRate) {
+            status = "Abnormal";
+            SmsManager sms = SmsManager.getDefault();
+            StringBuffer smsBody = new StringBuffer();
+            smsBody.append("http://maps.google.com?q=");
+            smsBody.append(latitudine);
+            smsBody.append(",");
+            smsBody.append(longitudine);
+            sms.sendTextMessage(emergencyTelephone, null, "EMERGENCY TO " + emergencyContract + "\n " +
+                    "From " + Name + " " + Lastname + "\n" + smsBody.toString(), null, null);
+        } else {
+            status = "Normal";
+        }
+        cv.put("Status", status);
+        Uri uri = getContentResolver().insert(u, cv);
+        Toast.makeText(getApplicationContext(), "Measure complete" + latitudine + " " + longitudine + " " + status, Toast.LENGTH_SHORT).show();
     }
 }
