@@ -55,9 +55,9 @@ public class Record_BloodPressure extends AppCompatActivity implements View.OnCl
         cancelBP.setOnClickListener(this);
 
         Systolic = (EditText) findViewById(R.id.systolic);
-        Systolic.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        Systolic.setInputType(InputType.TYPE_CLASS_NUMBER);
         Diastolic = (EditText) findViewById(R.id.diastolic);
-        Diastolic.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        Diastolic.setInputType(InputType.TYPE_CLASS_NUMBER);
         systolic = Systolic.getText().toString();
         diastolic = Diastolic.getText().toString();
 

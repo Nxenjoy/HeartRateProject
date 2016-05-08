@@ -87,7 +87,7 @@ public class Exercise1 extends Fragment{
         formattedTimeRecord = time.format(c.getTime());
         Timer = (TextView) v.findViewById(R.id.Timer);
         editTimer = (EditText)v.findViewById(R.id.editTimer);
-        editTimer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editTimer.setInputType(InputType.TYPE_CLASS_NUMBER);
 
         SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         formattedDateRecord = date.format(c.getTime());

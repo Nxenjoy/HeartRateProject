@@ -49,6 +49,7 @@ public class Menu extends AppCompatActivity implements View.OnClickListener {
         showUser();
         showPressure();
         showHeartRate();
+        
         //method
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
