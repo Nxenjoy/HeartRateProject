@@ -156,9 +156,8 @@ public class CounterClass extends CountDownTimer{
             final Ringtone r = RingtoneManager.getRingtone(getContext().getApplicationContext(), notification);
             r.play();
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setTitle("Emergency !!");
-            builder.setMessage("Heart beats abnormally")
-                    .setCancelable(false)
+            builder.setTitle("Exercise Completed");
+            builder.setMessage("I just wanted to let you rest")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     r.stop();
