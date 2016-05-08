@@ -302,7 +302,7 @@ public class HeartRateMonitor extends AppCompatActivity{
                 makePhoneVibrate();
 
                 btnSave();
-                finish();
+
 
                 startTime = System.currentTimeMillis();
                 beats = 0;
@@ -407,8 +407,10 @@ public class HeartRateMonitor extends AppCompatActivity{
             sms.sendTextMessage(emergencyTelephone, null, "EMERGENCY TO " + emergencyContract + "\n " +
                     "From " + Name + " " + Lastname + "\n" + smsBody.toString(), null, null);
                 showReadingCompleteDialog();
+
         } else {
             status = "Normal";
+            finish();
         }
         cv.put("Status", status);
         Uri uri = getContentResolver().insert(u, cv);
@@ -428,6 +430,7 @@ public class HeartRateMonitor extends AppCompatActivity{
                                 public void onClick(DialogInterface dialog, int id) {
                                     r.stop();
                                     dialog.cancel();
+                                    finish();
                                 }
                             }
                     );
