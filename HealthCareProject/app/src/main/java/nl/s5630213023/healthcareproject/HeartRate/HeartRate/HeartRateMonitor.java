@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -410,7 +411,8 @@ public class HeartRateMonitor extends AppCompatActivity{
 
         } else {
             status = "Normal";
-            finish();
+            Intent MainActivity = new Intent(this,HeartRate_MainActivity.class);
+            startActivity(MainActivity);
         }
         cv.put("Status", status);
         Uri uri = getContentResolver().insert(u, cv);
@@ -430,7 +432,8 @@ public class HeartRateMonitor extends AppCompatActivity{
                                 public void onClick(DialogInterface dialog, int id) {
                                     r.stop();
                                     dialog.cancel();
-                                    finish();
+                                    Intent MainActivity = new Intent(parentReference,HeartRate_MainActivity.class);
+                                    startActivity(MainActivity);
                                 }
                             }
                     );
