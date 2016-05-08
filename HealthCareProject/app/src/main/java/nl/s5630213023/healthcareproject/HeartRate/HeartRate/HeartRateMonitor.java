@@ -1,8 +1,10 @@
 package nl.s5630213023.healthcareproject.HeartRate.HeartRate;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -10,6 +12,8 @@ import android.hardware.Camera;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -402,11 +406,36 @@ public class HeartRateMonitor extends AppCompatActivity{
             smsBody.append(longitudine);
             sms.sendTextMessage(emergencyTelephone, null, "EMERGENCY TO " + emergencyContract + "\n " +
                     "From " + Name + " " + Lastname + "\n" + smsBody.toString(), null, null);
+                showReadingCompleteDialog();
         } else {
             status = "Normal";
         }
         cv.put("Status", status);
         Uri uri = getContentResolver().insert(u, cv);
         Toast.makeText(getApplicationContext(), "Measure complete" + latitudine + " " + longitudine + " " + status, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showReadingCompleteDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(parentReference);
+        builder.setTitle("Emergency !!");
+        builder.setMessage("Heart beats abnormally")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                try {
+                                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                                    r.play();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                dialog.cancel();
+                            }
+                        }
+                );
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 }
