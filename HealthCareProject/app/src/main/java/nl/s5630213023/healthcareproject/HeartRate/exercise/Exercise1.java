@@ -152,25 +152,26 @@ public class CounterClass extends CountDownTimer{
 
     private void showReadingCompleteDialog(){
         try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Ringtone r = RingtoneManager.getRingtone(getContext().getApplicationContext(), notification);
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            final Ringtone r = RingtoneManager.getRingtone(getContext().getApplicationContext(), notification);
             r.play();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle("Emergency !!");
+            builder.setMessage("Heart beats abnormally")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    r.stop();
+                                    dialog.cancel();
+                                }
+                            }
+                    );
+            AlertDialog alert = builder.create();
+            alert.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Exercise Completed");
-        builder.setMessage("I just wanted to let you rest")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                btnSave();
-                                dialog.cancel();
-                            }
-                        }
-                );
-        AlertDialog alert = builder.create();
-        alert.show();
+
 
     }
 

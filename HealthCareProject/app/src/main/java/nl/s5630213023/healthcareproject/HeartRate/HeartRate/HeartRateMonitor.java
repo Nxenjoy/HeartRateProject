@@ -417,25 +417,26 @@ public class HeartRateMonitor extends AppCompatActivity{
 
     private void showReadingCompleteDialog(){
         try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
+            AlertDialog.Builder builder = new AlertDialog.Builder(parentReference);
+            builder.setTitle("Emergency !!");
+            builder.setMessage("Heart beats abnormally")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    r.stop();
+                                    dialog.cancel();
+                                }
+                            }
+                    );
+            AlertDialog alert = builder.create();
+            alert.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(parentReference);
-        builder.setTitle("Emergency !!");
-        builder.setMessage("Heart beats abnormally")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
 
-                                dialog.cancel();
-                            }
-                        }
-                );
-        AlertDialog alert = builder.create();
-        alert.show();
 
     }
 }
