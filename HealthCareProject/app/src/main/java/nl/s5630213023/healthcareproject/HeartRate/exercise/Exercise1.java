@@ -2,7 +2,11 @@ package nl.s5630213023.healthcareproject.HeartRate.exercise;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +37,7 @@ public class Exercise1 extends Fragment{
         return new Exercise1();
     }
     EditText editTimer;
+
     String formattedDateRecord;
     String formattedTimeRecord;
 
@@ -64,10 +69,13 @@ public class Exercise1 extends Fragment{
         //Spinner
         String[] type = {"Type","Walking","Running","Fitness","Other",};
         typeExercise = (Spinner)v.findViewById(R.id.typeExercise);
-
         ArrayAdapter<String> strType = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,type);
         strType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         typeExercise.setAdapter(strType);
+
+
+
+
 
         //Calendar
         Calendar c = Calendar.getInstance();
@@ -75,16 +83,14 @@ public class Exercise1 extends Fragment{
         String formattedDate = df.format(c.getTime());
         TextView dateex = (TextView)v.findViewById(R.id.date_exercise);
         dateex.setText("Current : " + formattedDate);
-
-        editTimer = (EditText)v.findViewById(R.id.editTimer);
-        editTimer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
-        formattedDateRecord = date.format(c.getTime());
-
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
         formattedTimeRecord = time.format(c.getTime());
-
         Timer = (TextView) v.findViewById(R.id.Timer);
+        editTimer = (EditText)v.findViewById(R.id.editTimer);
+        editTimer.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
+        formattedDateRecord = date.format(c.getTime());
 
 
         final CounterClass timer = new CounterClass(100000,1000);
@@ -122,7 +128,7 @@ public class CounterClass extends CountDownTimer{
 
     @Override
     public void onFinish() {
-
+        showReadingCompleteDialog();
     }
 }
 
@@ -142,5 +148,30 @@ public class CounterClass extends CountDownTimer{
         Toast.makeText(getActivity().getApplicationContext(), "Start complete", Toast.LENGTH_SHORT).show();
     }
 
+
+
+    private void showReadingCompleteDialog(){
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            Ringtone r = RingtoneManager.getRingtone(getContext().getApplicationContext(), notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Exercise Completed");
+        builder.setMessage("I just wanted to let you rest")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                btnSave();
+                                dialog.cancel();
+                            }
+                        }
+                );
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
 
 }
