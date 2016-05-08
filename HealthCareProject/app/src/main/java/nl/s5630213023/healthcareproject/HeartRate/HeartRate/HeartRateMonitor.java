@@ -417,7 +417,7 @@ public class HeartRateMonitor extends AppCompatActivity{
 
     private void showReadingCompleteDialog(){
         try {
-            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
             r.play();
             AlertDialog.Builder builder = new AlertDialog.Builder(parentReference);
