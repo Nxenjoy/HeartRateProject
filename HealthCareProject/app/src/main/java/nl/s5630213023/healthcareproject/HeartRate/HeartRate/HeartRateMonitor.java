@@ -416,6 +416,13 @@ public class HeartRateMonitor extends AppCompatActivity{
     }
 
     private void showReadingCompleteDialog(){
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(parentReference);
         builder.setTitle("Emergency !!");
         builder.setMessage("Heart beats abnormally")
@@ -423,13 +430,6 @@ public class HeartRateMonitor extends AppCompatActivity{
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                try {
-                                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                    Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                                    r.play();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
                                 dialog.cancel();
                             }
                         }
