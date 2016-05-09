@@ -67,7 +67,7 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
         btnMeasure.setOnClickListener(this);
 
         newHeartRate = (TextView) v.findViewById(R.id.newHeartRate);
-        status = (TextView)v.findViewById(R.id.status);
+        status = (TextView) v.findViewById(R.id.status);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String formattedDate = df.format(c.getTime());
@@ -112,7 +112,7 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
         }
     }
 
-    private void showHeartRate(){
+    private void showHeartRate() {
         Uri u = Uri.parse("content://HeartRateDB");
         String projs[] = {"heartrate"};
         Cursor c = getActivity().getContentResolver().query(u, projs, null, null, "heartRate_id DESC");
@@ -124,7 +124,6 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
 
         }
     }
-
 
 
     @Override
@@ -164,5 +163,4 @@ public class HeartRate1 extends Fragment implements View.OnClickListener, OnMapR
         googleMap.setBuildingsEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
     }
-
 }

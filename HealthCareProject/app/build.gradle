@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "nl.s5630213023.healthcareproject"
-        minSdkVersion 22
+        minSdkVersion 20
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -31,7 +31,6 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
-
     //chart
     compile files('libs/mpandroidchartlibrary-2-2-4.jar')
     compile files('libs/Pubnub-Android-3.7.3.jar')

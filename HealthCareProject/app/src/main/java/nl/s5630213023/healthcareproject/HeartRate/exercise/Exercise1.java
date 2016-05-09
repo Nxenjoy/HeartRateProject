@@ -40,7 +40,8 @@ public class Exercise1 extends Fragment{
 
     String formattedDateRecord;
     String formattedTimeRecord;
-
+    static int minute;
+    static int count;
     TextView Timer;
     //Spinner
     static String typeSelect;
@@ -92,14 +93,19 @@ public class Exercise1 extends Fragment{
         SimpleDateFormat date = new SimpleDateFormat("dd-MM-yyyy");
         formattedDateRecord = date.format(c.getTime());
 
+        //Timer
 
-        final CounterClass timer = new CounterClass(100000,1000);
+
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                minute = Integer.parseInt(editTimer.getText().toString());
+                count = minute*60000;
                 btnSave();
-                Timer.setText("00:"+editTimer.getText().toString()+":00");
+                Timer.setText("00:00:00");
+                CounterClass timer = new CounterClass(count,1000);
                 timer.start();
                             }
         });
@@ -108,9 +114,13 @@ public class Exercise1 extends Fragment{
 
     }
 
+
+
+
+
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @SuppressLint("NewApi")
-public class CounterClass extends CountDownTimer{
+    public class CounterClass extends CountDownTimer{
 
     public CounterClass(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);

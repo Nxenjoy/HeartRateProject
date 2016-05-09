@@ -167,24 +167,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="510dp"
-        android:background="#c5eff1">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:text="Medical opinion : "
-        android:id="@+id/opinion"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="79dp"
-        android:autoText="false" />
-    </LinearLayout>
-
-
-
 
 </RelativeLayout>

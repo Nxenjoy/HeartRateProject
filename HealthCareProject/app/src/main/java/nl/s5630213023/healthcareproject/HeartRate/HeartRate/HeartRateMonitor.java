@@ -26,7 +26,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -128,6 +127,7 @@ public class HeartRateMonitor extends AppCompatActivity{
         }
 
         //measure
+
         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         parentReference=this;
 
@@ -144,7 +144,6 @@ public class HeartRateMonitor extends AppCompatActivity{
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
         prepareCountDownTimer();
 
-
     }
 
     //Google Map
@@ -153,7 +152,6 @@ public class HeartRateMonitor extends AppCompatActivity{
             // TODO Auto-generated method stub
 
             if (location == null) { return; }
-            //gMap.clear();
             latitudine = location.getLatitude();
             longitudine = location.getLongitude();
         }
@@ -188,7 +186,7 @@ public class HeartRateMonitor extends AppCompatActivity{
             highHeartRate = c.getInt(3);
             emergencyContract = c.getString(4);
             emergencyTelephone = c.getString(5);
-            Toast.makeText(getApplicationContext(),"High heart rate" + highHeartRate + "Low heart Rate" + lowHeartRate , Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"High heart rate" + highHeartRate + " bpm  Low heart Rate" + lowHeartRate +" bpm", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -201,7 +199,9 @@ public class HeartRateMonitor extends AppCompatActivity{
     public void onResume() {
         super.onResume();
         wakeLock.acquire();
+
         camera = Camera.open();
+
         startTime = System.currentTimeMillis();
     }
 
@@ -210,12 +210,15 @@ public class HeartRateMonitor extends AppCompatActivity{
         super.onPause();
 
         wakeLock.release();
-        camera.setPreviewCallback(null);
-        camera.stopPreview();
-        camera.release();
+
+            camera.setPreviewCallback(null);
+            camera.stopPreview();
+            camera.release();
+
         text.setText("---");
         camera = null;
     }
+
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
 
@@ -326,32 +329,33 @@ public class HeartRateMonitor extends AppCompatActivity{
                 camera.setPreviewDisplay(previewHolder);
                 camera.setPreviewCallback(previewCallback);
             } catch (Throwable t) {
-                Log.e("PreviewDemo-surfaceCallback", "Exception in setPreviewDisplay()", t);
+
             }
         }
 
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            Camera.Parameters parameters = camera.getParameters();
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            Camera.Size size = getSmallestPreviewSize(width, height, parameters);
-            if (size != null) {
-                parameters.setPreviewSize(size.width, size.height);
-                Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
+            try {
+                Camera.Parameters parameters = camera.getParameters();
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+                Camera.Size size = getSmallestPreviewSize(width, height, parameters);
+                if (size != null) {
+                    parameters.setPreviewSize(size.width, size.height);
+                }
+                camera.setParameters(parameters);
+                camera.startPreview();
+            }catch (Exception e){
+                return;
             }
-            camera.setParameters(parameters);
-            camera.startPreview();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
             // Ignore
         }
     };
+
 
     private static Camera.Size getSmallestPreviewSize(int width, int height, Camera.Parameters parameters) {
         Camera.Size result = null;
@@ -371,9 +375,7 @@ public class HeartRateMonitor extends AppCompatActivity{
         return result;
     }
 
-
-
-    private static void prepareCountDownTimer(){
+    private void prepareCountDownTimer(){
         mTxtVwStopWatch.setText("---");
         new CountDownTimer(10000, 1000) {
 
@@ -405,18 +407,21 @@ public class HeartRateMonitor extends AppCompatActivity{
             smsBody.append(latitudine);
             smsBody.append(",");
             smsBody.append(longitudine);
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
             sms.sendTextMessage(emergencyTelephone, null, "EMERGENCY TO " + emergencyContract + "\n " +
                     "From " + Name + " " + Lastname + "\n" + smsBody.toString(), null, null);
-                showReadingCompleteDialog();
+            showReadingCompleteDialog();
 
         } else {
             status = "Normal";
+            finish();
             Intent MainActivity = new Intent(this,HeartRate_MainActivity.class);
             startActivity(MainActivity);
+
         }
         cv.put("Status", status);
         Uri uri = getContentResolver().insert(u, cv);
-        Toast.makeText(getApplicationContext(), "Measure complete" + latitudine + " " + longitudine + " " + status, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Measure complete", Toast.LENGTH_SHORT).show();
     }
 
     private void showReadingCompleteDialog(){

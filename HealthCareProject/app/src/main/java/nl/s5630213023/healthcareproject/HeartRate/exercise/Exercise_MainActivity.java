@@ -45,13 +45,10 @@ public class Exercise_MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int pos) {
             switch (pos) {
-
                 case 0:
                     return Exercise1.newInstance();
-
                 case 1:
                     return Exercise2.newInstance();
-
                 default:
                     return Exercise1.newInstance();
             }
