@@ -23,7 +23,26 @@ public class ExerciseAdapter extends ArrayAdapter<Exer> {
         TextView txtTimer = (TextView)convertView.findViewById(R.id.txtTimer);
 
         txtType.setText(Exer.getType());
-        txtTimer.setText(Exer.getTimer() + " minute");
+        int cal;
+        switch (Exer.getType()){
+            case "Unknown" :  txtTimer.setText(Exer.getTimer() + " minute");
+                break;
+            case "Walking" :
+                cal = Exer.getTimer()*7;
+                txtTimer.setText(Exer.getTimer() + " minute " + cal + " kcal");
+                break;
+            case "Running" :
+                cal = Exer.getTimer()*10;
+                txtTimer.setText(Exer.getTimer() + " minute " + cal + " kcal");
+                break;
+            case "Fitness" : txtTimer.setText(Exer.getTimer() + " minute");
+                break;
+            case "Other" :  txtTimer.setText(Exer.getTimer() + " minute");
+                break;
+
+
+        }
+
         return convertView;
     }
 }
